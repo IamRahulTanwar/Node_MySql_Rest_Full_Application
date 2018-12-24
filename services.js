@@ -70,12 +70,50 @@ var routes = function(){
     app.post('/register',(req,res)=>{
 
         let post = {email:req.body.email,name:req.body.name,office_id:req.body.office_id,password:req.body.password};
-        let sql = `INSERT INTO users  SET ?`;
-        let query = db.query(sql, post, (err, result) => {
-            if(err) throw err;
-            console.log(result);
-            res.send('User Registered');
-        });   
+        let sql = `SELECT COUNT(id) as id FROM users WHERE email = '${req.body.email}'`;
+        let query = db.query(sql, (err, result) => {
+            if(err)throw err;
+
+            var id;
+            result.forEach(element => {
+                id = element.id;
+            });
+
+            if(id>0){
+                    var data = {
+                                    
+                        code : 'Failed' ,
+                        data:'User Already Exists'   
+                    };
+                console.log(result);
+                res.send(JSON.stringify(data));
+
+            }else{
+                        let sql = `INSERT INTO users  SET ?`;
+                        let query = db.query(sql, post, (err, result) => {
+                        if(err) {
+                            //throw err;
+                            var data = {
+                                
+                                code : 'failed'    
+                            };
+                        console.log(result);
+                        res.send(JSON.stringify(data));
+                        }else{
+
+
+                            var data = {
+                                
+                                code : 'success'    
+                            };
+                        console.log(result);
+                        res.send(JSON.stringify(data));
+                    
+                    }
+                    });   
+            }
+            
+        });
     });
 
     //login user 
@@ -102,7 +140,7 @@ var routes = function(){
             if(id!=null){
                 var data = {
                     id : id,
-                    code : 'success'    
+                    code : 'success',    
                 };
             }else{
                 var data = {                   
