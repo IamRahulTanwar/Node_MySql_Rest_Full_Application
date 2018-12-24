@@ -63,13 +63,7 @@ var routes = function(){
 
     });
 
-    app.post('/rahul',(req,res)=>{
-
-    console.log(req.body);
-    res.send(req.body);
-
-    });
-
+    
 
     //register user 
 
