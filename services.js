@@ -34,7 +34,7 @@ var routes = function(){
             host     : 'localhost',
             user     : 'root',
             password : 'root',
-            database : 'ConfessOut'
+            database : 'DB_Name'
         });
 
     // Connect
